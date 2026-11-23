@@ -20,8 +20,8 @@ describe("Configuration des 6 Modèles de Pokédex", () => {
     expect(ids).toContain("rotom");
   });
 
-  it("définit HeartGold / SoulSilver comme modèle par défaut", () => {
-    expect(MODELE_PAR_DEFAUT).toBe("hgss");
+  it("définit Diamant & Perle comme modèle par défaut", () => {
+    expect(MODELE_PAR_DEFAUT).toBe("dppt");
   });
 
   it("permet de retrouver un modèle par son identifiant", () => {
@@ -76,12 +76,12 @@ describe("Store Zustand ModelePokedex", () => {
   });
 
   it("s'initialise avec le modèle par défaut", () => {
-    expect(useModelePokedexStore.getState().modeleActif).toBe("hgss");
+    expect(useModelePokedexStore.getState().modeleActif).toBe("dppt");
   });
 
   it("permet de basculer vers un autre modèle", () => {
-    useModelePokedexStore.getState().definirModele("dppt");
-    expect(useModelePokedexStore.getState().modeleActif).toBe("dppt");
+    useModelePokedexStore.getState().definirModele("hgss");
+    expect(useModelePokedexStore.getState().modeleActif).toBe("hgss");
 
     useModelePokedexStore.getState().definirModele("rotom");
     expect(useModelePokedexStore.getState().modeleActif).toBe("rotom");
@@ -90,6 +90,6 @@ describe("Store Zustand ModelePokedex", () => {
   it("ignore les identifiants non valides", () => {
     // @ts-expect-error test avec valeur invalide
     useModelePokedexStore.getState().definirModele("modele-fantome");
-    expect(useModelePokedexStore.getState().modeleActif).toBe("hgss");
+    expect(useModelePokedexStore.getState().modeleActif).toBe("dppt");
   });
 });

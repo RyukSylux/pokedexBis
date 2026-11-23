@@ -17,10 +17,10 @@ export default function NavigateurPokedex({ pokemons }: Props) {
   const modeleActif = useModelePokedexStore((state) => state.modeleActif);
 
   switch (modeleActif) {
-    case "hgss":
-      return <ModeleHGSS pokemons={pokemons} />;
     case "dppt":
       return <ModeleDPPt pokemons={pokemons} />;
+    case "hgss":
+      return <ModeleHGSS pokemons={pokemons} />;
     case "frlg":
       return <ModeleFRLG pokemons={pokemons} />;
     case "kanto":
@@ -30,6 +30,6 @@ export default function NavigateurPokedex({ pokemons }: Props) {
     case "rotom":
       return <ModeleRotom pokemons={pokemons} />;
     default:
-      return <ModeleHGSS pokemons={pokemons} />;
+      return <ModeleDPPt pokemons={pokemons} />;
   }
 }

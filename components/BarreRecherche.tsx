@@ -47,9 +47,9 @@ export default function BarreRecherche() {
         type="search"
         value={valeur}
         onChange={(e) => setValeur(e.target.value)}
-        placeholder="Rechercher (ex: Dracaufeu, Pikachu, #006)..."
+        placeholder="Rechercher (ex: Lucario, Tiplouf, #390)..."
         aria-label="Rechercher un Pokémon"
-        className="w-full rounded-2xl border border-gray-200 bg-white py-2.5 pl-10 pr-9 text-sm text-gray-900 shadow-xs transition placeholder:text-gray-400 focus:border-pokedex focus:outline-none focus:ring-2 focus:ring-pokedex/20 dark:border-gray-800 dark:bg-gray-900 dark:text-white"
+        className="w-full rounded-xl border border-gray-300 bg-white/90 py-2 pl-9 pr-8 text-xs font-semibold text-gray-900 shadow-xs transition placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
       />
       {valeur && (
         <button

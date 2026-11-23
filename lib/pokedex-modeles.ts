@@ -94,7 +94,7 @@ export const MODELES_POKEDEX: ModelePokedexConfig[] = [
   },
 ];
 
-export const MODELE_PAR_DEFAUT: ModelePokedexId = "hgss";
+export const MODELE_PAR_DEFAUT: ModelePokedexId = "dppt";
 
 export function obtenirModeleParId(id: string): ModelePokedexConfig {
   const trouve = MODELES_POKEDEX.find((m) => m.id === id);

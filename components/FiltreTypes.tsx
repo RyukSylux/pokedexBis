@@ -27,7 +27,7 @@ export default function FiltreTypes() {
         value={typeActif}
         onChange={(e) => changerType(e.target.value)}
         aria-label="Filtrer par type de Pokémon"
-        className="w-full sm:w-48 rounded-2xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-700 shadow-xs transition focus:border-pokedex focus:outline-none focus:ring-2 focus:ring-pokedex/20 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200"
+        className="w-full sm:w-36 rounded-xl border border-gray-300 bg-white/90 px-3 py-2 text-xs font-bold text-gray-800 shadow-xs transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
       >
         <option value="">Tous les types</option>
         {Object.entries(TYPES).map(([cle, { libelle }]) => (

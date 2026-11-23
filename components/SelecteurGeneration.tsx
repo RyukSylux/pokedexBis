@@ -17,51 +17,25 @@ export default function SelecteurGeneration() {
     } else {
       params.delete("gen");
     }
-    // Réinitialiser la pagination lors du changement de région
     params.delete("page");
     router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
-    <div className="flex items-center gap-1.5 overflow-x-auto pb-2 pt-1 no-scrollbar">
-      {/* Bouton Toutes les régions */}
-      <button
-        type="button"
-        onClick={() => changerGeneration("")}
-        className={`shrink-0 rounded-full px-3 py-1 font-mono text-xs font-bold transition shadow-xs border ${
-          !genActuelle
-            ? "bg-red-600 text-white border-red-600 shadow-red-600/30"
-            : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800 dark:hover:border-gray-700"
-        }`}
+    <div className="w-full sm:w-auto">
+      <select
+        value={genActuelle}
+        onChange={(e) => changerGeneration(e.target.value)}
+        aria-label="Filtrer par région ou génération"
+        className="w-full sm:w-44 rounded-xl border border-gray-300 bg-white/90 px-3 py-2 text-xs font-bold text-gray-800 shadow-xs transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
       >
-        Toutes
-      </button>
-
-      {/* Onglets par génération */}
-      {GENERATIONS.map((gen) => {
-        const estActive = genActuelle.toLowerCase() === gen.cle.toLowerCase();
-        return (
-          <button
-            key={gen.cle}
-            type="button"
-            onClick={() => changerGeneration(gen.cle)}
-            className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition shadow-xs border flex items-center gap-1.5 ${
-              estActive
-                ? "bg-red-600 text-white border-red-600 shadow-red-600/30"
-                : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800 dark:hover:border-gray-700"
-            }`}
-          >
-            <span>{gen.region}</span>
-            <span
-              className={`text-[10px] font-mono opacity-80 ${
-                estActive ? "text-red-100" : "text-gray-400"
-              }`}
-            >
-              #{gen.debut}-{gen.fin}
-            </span>
-          </button>
-        );
-      })}
+        <option value="">Toutes les régions</option>
+        {GENERATIONS.map((gen) => (
+          <option key={gen.cle} value={gen.cle}>
+            {gen.region} (#{gen.debut} à #{gen.fin})
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

@@ -5,7 +5,6 @@ import FiltreTypes from "@/components/FiltreTypes";
 import GrillePokemons from "@/components/GrillePokemons";
 import Pagination from "@/components/Pagination";
 import NavigateurPokedex from "@/components/modes/NavigateurPokedex";
-import SelecteurModelePokedex from "@/components/selecteur/SelecteurModelePokedex";
 import SelecteurGeneration from "@/components/SelecteurGeneration";
 import SqueletteGrille from "@/components/SqueletteGrille";
 import { estDansGeneration, obtenirBornesGeneration } from "@/lib/generations";
@@ -64,39 +63,28 @@ export default async function Accueil({ searchParams }: Props) {
   const bornesGen = gen ? obtenirBornesGeneration(gen) : null;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-pokedex">
-                {!estModeGrille
-                  ? "Pokédex Rétro · Molette 3D"
-                  : "Pokédex · Vue Grille Matricielle"}
-              </span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-              {gen ? `Pokédex · Région ${gen.charAt(0).toUpperCase() + gen.slice(1)}` : "Tous les Pokémon"}
-            </h1>
-            <p className="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
-              {total} Pokémon répertorié{total > 1 ? "s" : ""}
-              {bornesGen ? ` (#${bornesGen.debut} à #${bornesGen.fin})` : ""}
-              {type ? ` pour le type « ${type} »` : ""}
-              {q ? ` contenant « ${q} »` : ""}
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <SelecteurModelePokedex />
-            <BasculeVue />
-            <BarreRecherche />
-            <FiltreTypes />
-          </div>
+    <div className="space-y-4">
+      {/* BARRE DE CONTRÔLE COMPACTE POKÉDEX SINNOH */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-300 dark:border-gray-800">
+        <div className="flex items-center gap-2">
+          <span className="size-2.5 rounded-full bg-blue-500 animate-pulse" />
+          <h1 className="font-mono text-sm font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">
+            {gen ? `POKÉDEX · RÉGION ${gen.toUpperCase()}` : "POKÉDEX NATIONAL"}
+          </h1>
+          <span className="font-mono text-xs text-gray-500 dark:text-gray-400">
+            · {total} Pokémon{total > 1 ? "s" : ""}
+            {bornesGen ? ` (#${bornesGen.debut} à #${bornesGen.fin})` : ""}
+            {type ? ` [${type}]` : ""}
+          </span>
         </div>
 
-        {/* Barre des Régions / Générations */}
-        <SelecteurGeneration />
+        {/* Commandes compactes sur une seule ligne */}
+        <div className="flex flex-wrap items-center gap-2">
+          <BarreRecherche />
+          <SelecteurGeneration />
+          <FiltreTypes />
+          <BasculeVue />
+        </div>
       </div>
 
       {estModeGrille ? (
