@@ -69,6 +69,15 @@ export default function PageAPropos() {
         </div>
       </section>
 
+      <section className="rounded-2xl border border-red-500/20 bg-red-500/5 p-4 text-sm text-gray-600 dark:text-gray-300">
+        <p className="font-mono text-xs font-bold text-red-500 uppercase tracking-wider mb-1">
+          🎮 Easter Egg
+        </p>
+        <p>
+          Ce Pokédex contient un secret rétro culte... Entrez le <strong>Konami Code</strong> au clavier (<code>↑ ↑ ↓ ↓ ← → ← → B A</code>) ou tapez <strong>5 fois rapidement</strong> sur la Pokéball en haut à gauche pour déclencher l&apos;arcade !
+        </p>
+      </section>
+
       <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
         <Link
           href="/"
