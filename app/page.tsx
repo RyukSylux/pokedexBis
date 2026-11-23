@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import BarreRecherche from "@/components/BarreRecherche";
+import BasculeVue from "@/components/BasculeVue";
 import FiltreTypes from "@/components/FiltreTypes";
 import GrillePokemons from "@/components/GrillePokemons";
 import Pagination from "@/components/Pagination";
+import RoulettePokedex from "@/components/RoulettePokedex";
 import SelecteurGeneration from "@/components/SelecteurGeneration";
 import SqueletteGrille from "@/components/SqueletteGrille";
 import { estDansGeneration, obtenirBornesGeneration } from "@/lib/generations";
@@ -20,11 +22,12 @@ type Props = {
     type?: string;
     page?: string;
     gen?: string;
+    vue?: string;
   }>;
 };
 
 export default async function Accueil({ searchParams }: Props) {
-  const { q, type, page, gen } = await searchParams;
+  const { q, type, page, gen, vue } = await searchParams;
 
   const pageCourante = Math.max(1, parseInt(page ?? "1", 10) || 1);
   const parPage = 24;
@@ -79,6 +82,7 @@ export default async function Accueil({ searchParams }: Props) {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <BasculeVue />
             <BarreRecherche />
             <FiltreTypes />
           </div>
@@ -88,9 +92,13 @@ export default async function Accueil({ searchParams }: Props) {
         <SelecteurGeneration />
       </div>
 
-      <Suspense fallback={<SqueletteGrille count={parPage} />}>
-        <GrillePokemons pokemons={pokemons} />
-      </Suspense>
+      {vue === "roulette" ? (
+        <RoulettePokedex pokemons={pokemons} />
+      ) : (
+        <Suspense fallback={<SqueletteGrille count={parPage} />}>
+          <GrillePokemons pokemons={pokemons} />
+        </Suspense>
+      )}
 
       <Pagination
         pageCourante={pageCourante}
@@ -99,6 +107,7 @@ export default async function Accueil({ searchParams }: Props) {
         recherche={q}
         type={type}
         gen={gen}
+        vue={vue}
       />
     </div>
   );

@@ -8,6 +8,7 @@ type Props = {
   type?: string;
   gen?: string;
   tri?: string;
+  vue?: string;
 };
 
 export default function Pagination({
@@ -18,6 +19,7 @@ export default function Pagination({
   type,
   gen,
   tri,
+  vue,
 }: Props) {
   const totalPages = Math.max(1, Math.ceil(totalElements / parPage));
 
@@ -30,6 +32,7 @@ export default function Pagination({
     if (type) params.set("type", type);
     if (gen) params.set("gen", gen);
     if (tri) params.set("tri", tri);
+    if (vue) params.set("vue", vue);
     const qs = params.toString();
     return qs ? `/?${qs}` : "/";
   };

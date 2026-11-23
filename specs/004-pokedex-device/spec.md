@@ -64,11 +64,25 @@ Transformer l'application en un **véritable appareil Pokédex immersif** (forma
 
 ---
 
+### User Story 4 - Roulette Cylindrique Rétro des Jeux Pokémon (Priority: P1)
+**En tant que** dresseur nostalgique des jeux Pokémon (Rouge Feu / Vert Feuille, Diamant / Perle, Or HeartGold),  
+**Je veux** pouvoir activer une roulette cylindrique animée en 3D où les Pokémon défilent avec courbure cylindrique et scan en temps réel du Pokémon sélectionné,  
+**Afin de** revivre l'expérience originale du Pokédex des consoles Nintendo.
+
+**Critères d'acceptation** :
+1. **Bascule Grille / Roulette** : Un bouton permet de basculer entre la grille 24/page et la roulette animée 3D.
+2. **Molette Cylindrique 3D** : Effet de rouleau cylindrique avec perspective CSS (`rotateX`), Pokéballs stylisées à côté de chaque entrée, zoom et halo lumineux sur l'élément central actif.
+3. **Écran de Scan Live** : L'illustration grand format, les types, le nom français et les mensurations du Pokémon sélectionné s'affichent instantanément dans le volet d'analyse.
+4. **Navigation Tactile & D-Pad** : Défilement par molette de souris, gestes de glissement tactile (swipe) sur mobile, ou touches directionnelles du D-Pad.
+5. **Ouverture de Fiche** : Clic sur le Pokémon centré ou bouton d'analyse ouvre directement `/pokemon/[nom]`.
+
+---
+
 ## 3. Exigences Fonctionnelles (FR)
 
 - **FR-001** : Composant `ModalRecrutement.tsx` permettant la recherche rapide et l'enrôlement direct dans `useSacoche`.
 - **FR-002** : Recherche locale et asynchrone parmi tous les Pokémon (avec mapping bilingue FR/EN).
 - **FR-003** : Composant de châssis matériel `ChassisPokedex.tsx` intégrant la coque rouge biseautée, les voyants LED, la lentille caméra bleue et l'écran numérique intérieur.
 - **FR-004** : Respect strict du mobile-first : adapté à tous les formats d'écrans de 360px à 4K.
-- **FR-005** : Conservation absolue des 40 tests Vitest existants + nouveaux tests unitaires pour le recrutement direct.
+- **FR-005** : Composant `RoulettePokedex.tsx` et calcul mathématique de courbure cylindrique dans `lib/roulette.ts`.
 - **FR-006** : Build de production Next.js et conformité ESLint sans aucune erreur.
