@@ -6,6 +6,7 @@ export type Statistique = {
 export type Pokemon = {
   id: number;
   nom: string;
+  nomFr?: string; // Nom officiel en français (ex: "Dracaufeu")
   image: string;
   imageShiny?: string;
   criAudio?: string;
@@ -70,7 +71,7 @@ export type NoeudEvolution = {
   evolvesTo: NoeudEvolution[];
 };
 
-export type Membre = Pick<Pokemon, "id" | "nom" | "image" | "types"> & {
+export type Membre = Pick<Pokemon, "id" | "nom" | "nomFr" | "image" | "types"> & {
   surnom: string;
   stats?: Statistique[];
   bst?: number;

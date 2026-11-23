@@ -21,11 +21,11 @@ export const useSacoche = create<EtatSacoche>()(
         set((etat) => {
           const dejaPresent = etat.equipe.some((membre) => membre.id === pokemon.id);
           if (dejaPresent || etat.equipe.length >= TAILLE_SACOCHE) return etat;
-          const { id, nom, image, types, stats, bst } = pokemon;
+          const { id, nom, nomFr, image, types, stats, bst } = pokemon;
           return {
             equipe: [
               ...etat.equipe,
-              { id, nom, image, types, stats, bst, surnom: "" },
+              { id, nom, nomFr, image, types, stats, bst, surnom: "" },
             ],
           };
         }),

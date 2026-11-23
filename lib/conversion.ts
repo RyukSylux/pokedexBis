@@ -1,4 +1,5 @@
 import type { Pokemon, PokemonApi } from "@/types/pokemon";
+import { obtenirDonneesFrancaises } from "./donnees-francaises";
 
 export const API = "https://pokeapi.co/api/v2";
 
@@ -21,9 +22,14 @@ export function versPokemon(brut: PokemonApi): Pokemon {
 
   const talents = brut.abilities?.map((a) => a.ability.name) ?? [];
 
+  const donneesFr = obtenirDonneesFrancaises(brut.id);
+
   return {
     id: brut.id,
     nom: brut.name,
+    nomFr: donneesFr?.nomFr,
+    categorieFr: donneesFr?.categorieFr,
+    descriptionFr: donneesFr?.descriptionFr,
     image:
       brut.sprites.other["official-artwork"].front_default ??
       `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${brut.id}.png`,

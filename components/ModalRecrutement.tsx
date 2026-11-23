@@ -244,7 +244,7 @@ export default function ModalRecrutement({ ouvert, onFermer, slotCible }: Props)
                             #{String(p.id).padStart(3, "0")}
                           </span>
                           <h4 className="truncate text-sm font-extrabold capitalize text-white">
-                            {p.nom}
+                            {p.nomFr || p.nom}
                           </h4>
                         </div>
                         <div className="flex flex-wrap gap-1">

@@ -1,5 +1,6 @@
 import type { Pokemon, PokemonApi } from "@/types/pokemon";
 import { API, versPokemon } from "./conversion";
+import { rechercherIdParNomFrancais } from "./donnees-francaises";
 import {
   parserChaineEvolution,
   type ChaineEvolutionNoeudBrut,
@@ -22,7 +23,12 @@ export async function appeler<T>(cheminOuUrl: string): Promise<T | null> {
 }
 
 export async function recupererPokemon(nomOuId: string | number): Promise<Pokemon | null> {
-  const brut = await appeler<PokemonApi>(`/pokemon/${String(nomOuId).toLowerCase()}`);
+  let param = String(nomOuId).toLowerCase().trim();
+  const idFr = rechercherIdParNomFrancais(param);
+  if (idFr) {
+    param = String(idFr);
+  }
+  const brut = await appeler<PokemonApi>(`/pokemon/${param}`);
   return brut ? versPokemon(brut) : null;
 }
 

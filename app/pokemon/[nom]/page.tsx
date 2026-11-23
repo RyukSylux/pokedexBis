@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pokemon = await recupererPokemon(nom);
   if (!pokemon) return { title: "Pokémon introuvable" };
 
-  const nomCap = pokemon.nom.charAt(0).toUpperCase() + pokemon.nom.slice(1);
+  const nomCap = (pokemon.nomFr || pokemon.nom).charAt(0).toUpperCase() + (pokemon.nomFr || pokemon.nom).slice(1);
   return {
     title: nomCap,
     description: `Fiche détaillée de ${nomCap} : types, statistiques et chaîne d'évolution.`,
@@ -47,9 +47,9 @@ export default async function PagePokemon({ params }: Props) {
     recupererEtapesEvolution(pokemon.id),
   ]);
 
-  const nomFr = detailsEspece.nomFr;
-  const categorieFr = detailsEspece.categorieFr;
-  const descriptionFr = detailsEspece.descriptionFr;
+  const nomFr = pokemon.nomFr || detailsEspece.nomFr;
+  const categorieFr = pokemon.categorieFr || detailsEspece.categorieFr;
+  const descriptionFr = pokemon.descriptionFr || detailsEspece.descriptionFr;
 
   const nomsEvolutions = etapesEvolution.map((e) => e.nom);
   const pokemonsEvolution = await recupererPlusieurs(nomsEvolutions);
@@ -114,10 +114,10 @@ export default async function PagePokemon({ params }: Props) {
 
             <div className="mt-1">
               <h1 className="text-3xl font-extrabold capitalize text-gray-900 sm:text-4xl dark:text-white">
-                {pokemon.nom}{" "}
+                {nomFr || pokemon.nom}{" "}
                 {nomFr && nomFr.toLowerCase() !== pokemon.nom.toLowerCase() && (
                   <span className="text-xl font-normal text-gray-400 dark:text-gray-500">
-                    ({nomFr})
+                    ({pokemon.nom})
                   </span>
                 )}
               </h1>

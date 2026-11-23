@@ -40,9 +40,15 @@ export default function CartePokemon({ pokemon }: { pokemon: Pokemon }) {
           {numero}
         </span>
 
-        <h2 className="mb-2 text-base sm:text-lg font-extrabold capitalize text-gray-900 group-hover:text-pokedex transition-colors dark:text-white">
-          {pokemon.nom}
+        <h2 className="text-base sm:text-lg font-extrabold capitalize text-gray-900 group-hover:text-pokedex transition-colors dark:text-white">
+          {pokemon.nomFr || pokemon.nom}
         </h2>
+
+        {pokemon.nomFr && pokemon.nomFr.toLowerCase() !== pokemon.nom.toLowerCase() && (
+          <span className="mb-1 text-[11px] font-mono text-gray-400 capitalize">
+            {pokemon.nom}
+          </span>
+        )}
 
         <div className="flex flex-wrap justify-center gap-1.5">
           {pokemon.types.map((type) => (

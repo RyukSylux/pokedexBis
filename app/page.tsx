@@ -6,12 +6,13 @@ import Pagination from "@/components/Pagination";
 import SelecteurGeneration from "@/components/SelecteurGeneration";
 import SqueletteGrille from "@/components/SqueletteGrille";
 import { estDansGeneration, obtenirBornesGeneration } from "@/lib/generations";
+import { obtenirNomFrancais } from "@/lib/donnees-francaises";
 import {
   recupererNomsParType,
   recupererPlusieurs,
   recupererTousLesNoms,
 } from "@/lib/pokeapi";
-import { correspondanceRecherche } from "@/lib/recherche-bilingue";
+import { correspondanceRecherche, normaliserTexte } from "@/lib/recherche-bilingue";
 
 type Props = {
   searchParams: Promise<{
@@ -38,7 +39,11 @@ export default async function Accueil({ searchParams }: Props) {
 
   // 3. Filtrage bilingue (FR / EN)
   if (q && q.trim()) {
-    liste = liste.filter((p) => correspondanceRecherche(p.nom, q));
+    liste = liste.filter((p) => {
+      const nomFr = obtenirNomFrancais(p.id);
+      if (nomFr && normaliserTexte(nomFr).includes(normaliserTexte(q))) return true;
+      return correspondanceRecherche(p.nom, q);
+    });
   }
 
   const total = liste.length;

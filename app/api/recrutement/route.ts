@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { recupererNomsParType, recupererPlusieurs, recupererTousLesNoms } from "@/lib/pokeapi";
-import { correspondanceRecherche } from "@/lib/recherche-bilingue";
+import { obtenirNomFrancais } from "@/lib/donnees-francaises";
+import { correspondanceRecherche, normaliserTexte } from "@/lib/recherche-bilingue";
 
 const POKEMONS_POPULAIRES = [
   "charizard",
@@ -36,6 +37,8 @@ export async function GET(request: Request) {
     if (q) {
       liste = liste.filter((p) => {
         if (String(p.id) === q) return true;
+        const nomFr = obtenirNomFrancais(p.id);
+        if (nomFr && normaliserTexte(nomFr).includes(normaliserTexte(q))) return true;
         return correspondanceRecherche(p.nom, q);
       });
     }

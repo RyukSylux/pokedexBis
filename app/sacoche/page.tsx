@@ -335,12 +335,12 @@ export default function PageSacoche() {
                     ) : (
                       <div className="flex items-center gap-1.5">
                         <h3 className="truncate text-base font-extrabold capitalize text-gray-900 dark:text-white">
-                          {membre.surnom || membre.nom}
+                          {membre.surnom || membre.nomFr || membre.nom}
                         </h3>
                         <button
                           type="button"
                           onClick={() =>
-                            handleDemarrerEdition(membre.id, membre.surnom, membre.nom)
+                            handleDemarrerEdition(membre.id, membre.surnom, membre.nomFr || membre.nom)
                           }
                           title="Modifier le surnom"
                           aria-label="Modifier le surnom"
@@ -353,7 +353,7 @@ export default function PageSacoche() {
 
                     {membre.surnom && (
                       <p className="text-[11px] text-gray-400 capitalize">
-                        Espèce : {membre.nom}
+                        Espèce : {membre.nomFr || membre.nom}
                       </p>
                     )}
 
