@@ -5,7 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import AnalyseurEquipe from "@/components/AnalyseurEquipe";
 import BadgeType from "@/components/BadgeType";
+import { TYPES } from "@/lib/types";
 import { TAILLE_SACOCHE, useSacoche } from "@/stores/sacoche";
+
+const TOUS_LES_TYPES = Object.keys(TYPES);
 
 export default function PageSacoche() {
   const equipe = useSacoche((etat) => etat.equipe);
@@ -140,17 +143,45 @@ export default function PageSacoche() {
         </div>
       </div>
 
-      {/* Barre des types couverts avec badges */}
-      {typesCouverts.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-black/5 bg-white p-4 shadow-xs dark:border-white/10 dark:bg-gray-900">
-          <span className="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mr-1">
-            Types couverts par l&apos;équipe :
+      {/* Barre des types avec couverture complète des 18 types */}
+      <div className="rounded-3xl border border-black/5 bg-white p-5 shadow-xs dark:border-white/10 dark:bg-gray-900">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-extrabold text-gray-900 dark:text-white uppercase tracking-wider">
+              Couverture Élémentaire
+            </h2>
+            <span className="font-mono text-xs font-bold text-pokedex">
+              ({typesCouverts.length} / 18 types actifs)
+            </span>
+          </div>
+          <span className="text-xs font-mono text-gray-400">
+            {Math.round((typesCouverts.length / 18) * 100)}% de couverture du métagame
           </span>
-          {typesCouverts.map((type) => (
-            <BadgeType key={type} type={type} taille="sm" />
-          ))}
         </div>
-      )}
+
+        <div className="flex flex-wrap gap-1.5">
+          {TOUS_LES_TYPES.map((typeKey) => {
+            const estCouvert = typesCouverts.includes(typeKey);
+            return (
+              <div
+                key={typeKey}
+                className={`transition-all duration-200 ${
+                  estCouvert
+                    ? "opacity-100 scale-100"
+                    : "opacity-30 grayscale hover:opacity-60"
+                }`}
+                title={
+                  estCouvert
+                    ? `Type ${TYPES[typeKey].libelle} couvert par l'équipe`
+                    : `Type ${TYPES[typeKey].libelle} manquant dans l'équipe`
+                }
+              >
+                <BadgeType type={typeKey} taille="sm" />
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {/* Grille des 6 Emplacements Tactiques */}
       <div className="space-y-3">
@@ -252,6 +283,10 @@ export default function PageSacoche() {
                           type="text"
                           value={valeurSurnom}
                           onChange={(e) => setValeurSurnom(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") handleSauvegarderSurnom(membre.id);
+                            if (e.key === "Escape") setSlotEnEdition(null);
+                          }}
                           maxLength={12}
                           autoFocus
                           placeholder={membre.nom}
@@ -260,9 +295,20 @@ export default function PageSacoche() {
                         <button
                           type="button"
                           onClick={() => handleSauvegarderSurnom(membre.id)}
-                          className="rounded-lg bg-emerald-600 px-2 py-1 text-xs font-bold text-white hover:bg-emerald-700"
+                          title="Sauvegarder (Entrée)"
+                          aria-label="Sauvegarder le surnom"
+                          className="rounded-lg bg-emerald-600 px-2 py-1 text-xs font-bold text-white hover:bg-emerald-700 transition"
                         >
                           ✓
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSlotEnEdition(null)}
+                          title="Annuler (Échap)"
+                          aria-label="Annuler la modification"
+                          className="rounded-lg bg-gray-200 px-2 py-1 text-xs font-bold text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 transition"
+                        >
+                          ✕
                         </button>
                       </div>
                     ) : (
