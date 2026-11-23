@@ -1,13 +1,10 @@
 import { Suspense } from "react";
-import BarreRecherche from "@/components/BarreRecherche";
-import BasculeVue from "@/components/BasculeVue";
-import FiltreTypes from "@/components/FiltreTypes";
+import BarreControlesPokedex from "@/components/BarreControlesPokedex";
 import GrillePokemons from "@/components/GrillePokemons";
 import Pagination from "@/components/Pagination";
 import NavigateurPokedex from "@/components/modes/NavigateurPokedex";
-import SelecteurGeneration from "@/components/SelecteurGeneration";
 import SqueletteGrille from "@/components/SqueletteGrille";
-import { estDansGeneration, obtenirBornesGeneration } from "@/lib/generations";
+import { estDansGeneration } from "@/lib/generations";
 import { obtenirTousLesPokemonsComplets } from "@/lib/donnees-francaises";
 import { correspondanceRecherche, normaliserTexte } from "@/lib/recherche-bilingue";
 
@@ -60,32 +57,10 @@ export default async function Accueil({ searchParams }: Props) {
   const pokemonsGrille = liste.slice(debut, debut + parPage);
 
   // Libellé de la région sélectionnée
-  const bornesGen = gen ? obtenirBornesGeneration(gen) : null;
-
   return (
-    <div className="space-y-4">
-      {/* BARRE DE CONTRÔLE COMPACTE POKÉDEX SINNOH */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-300 dark:border-gray-800">
-        <div className="flex items-center gap-2">
-          <span className="size-2.5 rounded-full bg-blue-500 animate-pulse" />
-          <h1 className="font-mono text-sm font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">
-            {gen ? `POKÉDEX · RÉGION ${gen.toUpperCase()}` : "POKÉDEX NATIONAL"}
-          </h1>
-          <span className="font-mono text-xs text-gray-500 dark:text-gray-400">
-            · {total} Pokémon{total > 1 ? "s" : ""}
-            {bornesGen ? ` (#${bornesGen.debut} à #${bornesGen.fin})` : ""}
-            {type ? ` [${type}]` : ""}
-          </span>
-        </div>
-
-        {/* Commandes compactes sur une seule ligne */}
-        <div className="flex flex-wrap items-center gap-2">
-          <BarreRecherche />
-          <SelecteurGeneration />
-          <FiltreTypes />
-          <BasculeVue />
-        </div>
-      </div>
+    <div className="space-y-3.5">
+      {/* BARRE TACTILE SINNOH SANS AUCUNE COMBO-BOX */}
+      <BarreControlesPokedex total={total} />
 
       {estModeGrille ? (
         <>
