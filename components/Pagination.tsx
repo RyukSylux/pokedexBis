@@ -6,6 +6,8 @@ type Props = {
   parPage?: number;
   recherche?: string;
   type?: string;
+  gen?: string;
+  tri?: string;
 };
 
 export default function Pagination({
@@ -14,6 +16,8 @@ export default function Pagination({
   parPage = 24,
   recherche,
   type,
+  gen,
+  tri,
 }: Props) {
   const totalPages = Math.max(1, Math.ceil(totalElements / parPage));
 
@@ -24,6 +28,8 @@ export default function Pagination({
     if (numPage > 1) params.set("page", String(numPage));
     if (recherche) params.set("q", recherche);
     if (type) params.set("type", type);
+    if (gen) params.set("gen", gen);
+    if (tri) params.set("tri", tri);
     const qs = params.toString();
     return qs ? `/?${qs}` : "/";
   };
