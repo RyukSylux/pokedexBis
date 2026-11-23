@@ -44,3 +44,14 @@
   - [x] 7.2 Vérifier la conformité TypeScript et ESLint (`npm run lint`)
   - [x] 7.3 Valider le build de production Next.js (`npm run build`)
   - [x] 7.4 Commit Git dédié
+
+- [x] **Phase 8 : Refonte Ergonomique de la Sacoche & Ceinture de Dresseur**
+  - [x] 8.1 Écrire les tests unitaires `tests/sacoche-store.test.ts` (ajout, retrait, réordonner `deplacer`, renommage)
+  - [x] 8.2 Étendre `stores/sacoche.ts` avec la méthode `deplacer(from, to)` et le stockage des stats
+  - [x] 8.3 Repenser intégralement l'UI de `app/sacoche/page.tsx` (6 slots combat numérotés, badge Lead #01, boutons monter/descendre, édition surnom intuitive, résumé des stats totales d'équipe)
+
+- [x] **Phase 9 : Ergonomie Globale de l'Interface (Header, Cartes, Barre d'outils)**
+  - [x] 9.1 Développer `components/BoutonSacocheRapide.tsx` et l'intégrer sur `components/CartePokemon.tsx`
+  - [x] 9.2 Améliorer `components/EnTete.tsx` et `components/IndicateurSacoche.tsx` avec design Pokédex haut de gamme
+  - [x] 9.3 Ajouter le bouton de vidage rapide (✕) dans `components/BarreRecherche.tsx`
+  - [x] 9.4 Valider la suite de tests et le build complet

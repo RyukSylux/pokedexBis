@@ -9,6 +9,7 @@ type EtatSacoche = {
   ajouter: (pokemon: Pokemon) => void;
   retirer: (id: number) => void;
   renommer: (id: number, surnom: string) => void;
+  deplacer: (indexDepart: number, indexArrivee: number) => void;
   vider: () => void;
 };
 
@@ -20,9 +21,12 @@ export const useSacoche = create<EtatSacoche>()(
         set((etat) => {
           const dejaPresent = etat.equipe.some((membre) => membre.id === pokemon.id);
           if (dejaPresent || etat.equipe.length >= TAILLE_SACOCHE) return etat;
-          const { id, nom, image, types } = pokemon;
+          const { id, nom, image, types, stats, bst } = pokemon;
           return {
-            equipe: [...etat.equipe, { id, nom, image, types, surnom: "" }],
+            equipe: [
+              ...etat.equipe,
+              { id, nom, image, types, stats, bst, surnom: "" },
+            ],
           };
         }),
       retirer: (id: number) =>
@@ -35,6 +39,21 @@ export const useSacoche = create<EtatSacoche>()(
             membre.id === id ? { ...membre, surnom: surnom.slice(0, 12) } : membre
           ),
         })),
+      deplacer: (indexDepart: number, indexArrivee: number) =>
+        set((etat) => {
+          if (
+            indexDepart < 0 ||
+            indexDepart >= etat.equipe.length ||
+            indexArrivee < 0 ||
+            indexArrivee >= etat.equipe.length
+          ) {
+            return etat;
+          }
+          const nouvelleEquipe = [...etat.equipe];
+          const [element] = nouvelleEquipe.splice(indexDepart, 1);
+          nouvelleEquipe.splice(indexArrivee, 0, element);
+          return { equipe: nouvelleEquipe };
+        }),
       vider: () => set({ equipe: [] }),
     }),
     {

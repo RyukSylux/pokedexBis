@@ -56,9 +56,9 @@ En tant que dresseur naviguant sur l'accueil, je veux filtrer les Pokémon par G
 
 ---
 
-### User Story 4 - Outils Stratégiques de Dresseur (Comparateur & Synergie Sacoche) (Priority: P3)
+### User Story 4 - Outils Stratégiques de Dresseur (Comparateur & Synergie Sacoche) (Priority: P2)
 
-En tant que dresseur composant son équipe dans la sacoche, je veux un analyseur de synergie révélant les faiblesses critiques communes de mon équipe de 6 ainsi que sa couverture offensive, et un comparateur de Pokémon en duel pour optimiser mes choix.
+En tant que dresseur composant son équipe dans la sacoche, je veux un analyseur de synergie révélant les faiblesses critiques communes de mon équipe de 6 ainsi que sa couverture offensive, afin d'optimiser mes choix de combat.
 
 **Why this priority**: Donne une utilité concrète et tactique à la sacoche au-delà du simple inventaire.
 
@@ -66,7 +66,37 @@ En tant que dresseur composant son équipe dans la sacoche, je veux un analyseur
 
 **Acceptance Scenarios**:
 1. **Given** une équipe de Pokémon dans `/sacoche`, **When** le dresseur consulte l'analyseur d'équipe, **Then** les vulnérabilités cumulées sont calculées et mises en évidence.
-2. **Given** la page `/comparateur`, **When** le dresseur sélectionne 2 Pokémon, **Then** leurs statistiques sont superposées et l'avantage de type direct est calculé.
+2. **Given** la sacoche, **When** l'équipe compte moins de 3 membres, **Then** le diagnostic indique clairement que l'équipe est incomplète.
+
+---
+
+### User Story 5 - Sacoche Ergonomique & Ceinture de Combat (Priority: P1)
+
+En tant que dresseur gérant son équipe de 6 Pokémon, je veux une interface de sacoche ultra-ergonomique avec 6 emplacements numérotés (#01 à #06), un indicateur de Pokémon de tête (Lead), la possibilité de réordonner mes Pokémon (monter / descendre), l'édition intuitive du surnom avec validation visuelle, et un résumé global de puissance d'équipe (BST moyen et total), afin de préparer mon équipe comme dans un jeu officiel.
+
+**Why this priority**: L'ergonomie de la sacoche est l'écran le plus utilisé par le joueur pour gérer ses compagnons. Elle doit être agréable, claire et sans friction.
+
+**Independent Test**: Ajouter 6 Pokémon dans la sacoche, changer l'ordre avec les flèches monter/descendre, renommer un membre avec validation par bouton crayon/coche, et vérifier que le total de stats et l'emplacement Lead #01 s'adaptent immédiatement.
+
+**Acceptance Scenarios**:
+1. **Given** un Pokémon dans la sacoche à la position 2, **When** le dresseur clique sur la flèche monter (▲), **Then** le Pokémon échange sa place avec la position 1 et devient le Pokémon Lead.
+2. **Given** un Pokémon dans la sacoche, **When** le dresseur clique sur l'icône crayon du surnom, **Then** un champ d'édition avec bouton de validation (✓) apparaît et sauvegarde le surnom (max 12 caractères).
+3. **Given** des emplacements libres dans la sacoche, **When** le dresseur regarde ces emplacements, **Then** des cartes tactiles avec icône Pokéball vide et lien direct "+ Recruter un Pokémon" sont affichées.
+
+---
+
+### User Story 6 - Ergonomie de la Grille & Actions Directes (Priority: P2)
+
+En tant que visiteur parcourant la liste des Pokémon, je veux pouvoir ajouter ou retirer un Pokémon de ma sacoche directement depuis sa carte sur la grille d'accueil sans devoir ouvrir sa fiche, et bénéficier d'une barre d'outils de filtres fluide (recherche avec bouton effacer rapide, tri par BST ou alphabétique), afin de gagner du temps dans la composition de mon équipe.
+
+**Why this priority**: Réduit les clics et allers-retours nécessaires pour composer une équipe.
+
+**Independent Test**: Survoler ou cliquer sur le bouton Pokéball d'une carte dans la grille d'accueil et vérifier que le Pokémon est ajouté à la sacoche avec mise à jour immédiate du compteur d'en-tête.
+
+**Acceptance Scenarios**:
+1. **Given** un Pokémon affiché sur la grille d'accueil, **When** le dresseur clique sur le bouton Pokéball de la carte, **Then** le Pokémon est ajouté à la sacoche et le bouton passe en état « Dans la sacoche » (rouge plein).
+2. **Given** un Pokémon déjà dans la sacoche, **When** le dresseur clique à nouveau sur le bouton Pokéball de sa carte, **Then** le Pokémon est retiré de la sacoche.
+3. **Given** la barre de recherche avec du texte saisi, **When** l'utilisateur clique sur la croix (✕), **Then** le champ est instantanément vidé et la liste réinitialisée.
 
 ---
 

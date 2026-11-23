@@ -72,4 +72,6 @@ export type NoeudEvolution = {
 
 export type Membre = Pick<Pokemon, "id" | "nom" | "image" | "types"> & {
   surnom: string;
+  stats?: Statistique[];
+  bst?: number;
 };

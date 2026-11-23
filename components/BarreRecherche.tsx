@@ -49,8 +49,19 @@ export default function BarreRecherche() {
         onChange={(e) => setValeur(e.target.value)}
         placeholder="Rechercher (ex: Dracaufeu, Pikachu, #006)..."
         aria-label="Rechercher un Pokémon"
-        className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 shadow-sm transition placeholder:text-gray-400 focus:border-pokedex focus:outline-none focus:ring-2 focus:ring-pokedex/20 dark:border-gray-800 dark:bg-gray-900 dark:text-white"
+        className="w-full rounded-2xl border border-gray-200 bg-white py-2.5 pl-10 pr-9 text-sm text-gray-900 shadow-xs transition placeholder:text-gray-400 focus:border-pokedex focus:outline-none focus:ring-2 focus:ring-pokedex/20 dark:border-gray-800 dark:bg-gray-900 dark:text-white"
       />
+      {valeur && (
+        <button
+          type="button"
+          onClick={() => setValeur("")}
+          title="Effacer la recherche"
+          aria-label="Effacer la recherche"
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+        >
+          ✕
+        </button>
+      )}
     </div>
   );
 }
