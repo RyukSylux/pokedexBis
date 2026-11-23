@@ -1,0 +1,282 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import CompteurFavoris from "./CompteurFavoris";
+import IndicateurSacoche from "./IndicateurSacoche";
+import LogoPokeball from "./LogoPokeball";
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function ChassisPokedex({ children }: Props) {
+  const [heureActuelle, setHeureActuelle] = useState<string>("");
+
+  useEffect(() => {
+    const mettreAJourHeure = () => {
+      const m = new Date();
+      setHeureActuelle(
+        `${String(m.getHours()).padStart(2, "0")}:${String(m.getMinutes()).padStart(2, "0")}`
+      );
+    };
+    mettreAJourHeure();
+    const intervalle = setInterval(mettreAJourHeure, 30000);
+    return () => clearInterval(intervalle);
+  }, []);
+
+  const remonterEnHaut = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const descendreEnBas = () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-start p-0 sm:p-4 md:p-6 lg:p-8">
+      {/* Boîtier Châssis Pokédex */}
+      <div className="pokedex-chassis-shell relative flex w-full max-w-6xl flex-col rounded-none sm:rounded-[2.5rem] border-0 sm:border-4 border-red-700/80 shadow-2xl transition-all overflow-hidden">
+        
+        {/* Bandes de préhension latérales tactiles (Grip) visibles sur grand écran */}
+        <div className="absolute left-1.5 top-36 hidden h-48 w-1 flex-col justify-between sm:flex opacity-60">
+          {Array.from({ length: 8 }, (_, i) => (
+            <span key={i} className="h-4 w-full rounded-full bg-red-950/70" />
+          ))}
+        </div>
+        <div className="absolute right-1.5 top-36 hidden h-48 w-1 flex-col justify-between sm:flex opacity-60">
+          {Array.from({ length: 8 }, (_, i) => (
+            <span key={i} className="h-4 w-full rounded-full bg-red-950/70" />
+          ))}
+        </div>
+
+        {/* 1. TÊTE DE CONTRÔLE MATÉRIELLE DU POKÉDEX */}
+        <header className="relative border-b-4 border-red-900 bg-gradient-to-b from-red-600 via-pokedex to-red-800 px-4 pt-3 pb-3 sm:px-6 sm:pt-4 sm:pb-3.5 shadow-md">
+          {/* Ligne 1 : Grand Capteur Bleu, 3 LEDs & HUD Statut */}
+          <div className="flex items-center justify-between gap-3">
+            {/* Capteur optique & Diodes */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Grand Capteur Optique Bleu avec biseau chromé et reflet */}
+              <div
+                className="relative flex size-12 sm:size-14 shrink-0 items-center justify-center rounded-full border-4 border-white bg-slate-200 shadow-lg shadow-black/40 cursor-pointer active:scale-95 transition-transform"
+                title="Capteur optique Pokédex"
+                onClick={remonterEnHaut}
+              >
+                <div className="pokedex-optical-lens flex size-full items-center justify-center rounded-full animate-pulse">
+                  {/* Reflet de lentille */}
+                  <span className="absolute left-2 top-2 size-3.5 sm:size-4 rounded-full bg-white/70 blur-[0.5px]" />
+                </div>
+              </div>
+
+              {/* Trio de LEDs indicatrices (Rouge, Ambre, Vert) */}
+              <div className="flex items-center gap-2 sm:gap-2.5">
+                {/* LED Rouge */}
+                <div
+                  className="flex size-3.5 sm:size-4 items-center justify-center rounded-full border border-black/40 bg-red-500 shadow-sm shadow-red-500/80"
+                  title="Statut alimentation : ACTIF"
+                >
+                  <span className="size-1 rounded-full bg-white/80" />
+                </div>
+                {/* LED Jaune */}
+                <div
+                  className="flex size-3.5 sm:size-4 items-center justify-center rounded-full border border-black/40 bg-amber-400 shadow-sm shadow-amber-400/80"
+                  title="Base de données : SYNCHRONISÉE"
+                >
+                  <span className="size-1 rounded-full bg-white/80" />
+                </div>
+                {/* LED Verte */}
+                <div
+                  className="flex size-3.5 sm:size-4 items-center justify-center rounded-full border border-black/40 bg-emerald-400 shadow-sm shadow-emerald-400/80"
+                  title="Réseau PokéAPI : CONNECTÉ"
+                >
+                  <span className="size-1 rounded-full bg-white/80" />
+                </div>
+              </div>
+            </div>
+
+            {/* HUD Statut Système Pokédex */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="hidden sm:flex flex-col items-end font-mono text-[10px] text-red-100/90 leading-tight">
+                <span className="font-extrabold tracking-wider">POKÉDEX-OS v4.2</span>
+                <span className="text-red-200/80">SYNCHRO POKÉAPI · {heureActuelle || "12:00"}</span>
+              </div>
+              <div className="flex items-center gap-1 rounded-lg bg-black/40 border border-white/10 px-2 py-1 font-mono text-[11px] font-bold text-white shadow-inner">
+                <span className="size-2 rounded-full bg-emerald-400 animate-ping mr-0.5" />
+                <span className="text-[10px] sm:text-xs">ONLINE</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Ligne 2 : Navigation Pokédex & Accès Rapides */}
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-red-400/30">
+            <div className="flex items-center">
+              <LogoPokeball />
+            </div>
+
+            <nav className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold">
+              <Link
+                href="/"
+                className="rounded-full bg-black/20 hover:bg-black/35 border border-white/10 px-3 py-1.5 transition text-white active:scale-95 shadow-inner"
+              >
+                Encyclopédie
+              </Link>
+              <Link
+                href="/favoris"
+                className="flex items-center gap-1.5 rounded-full bg-black/20 hover:bg-black/35 border border-white/10 px-3 py-1.5 transition text-white active:scale-95 shadow-inner"
+              >
+                <span>Favoris</span>
+                <CompteurFavoris />
+              </Link>
+              <Link
+                href="/a-propos"
+                className="hidden md:inline rounded-full bg-black/20 hover:bg-black/35 border border-white/10 px-3 py-1.5 transition text-white shadow-inner"
+              >
+                Manuel
+              </Link>
+              <IndicateurSacoche />
+            </nav>
+          </div>
+        </header>
+
+        {/* 2. CADRE DE L'ÉCRAN NUMÉRIQUE (BEZEL NOIR MATÉRIEL) */}
+        <div className="p-2 sm:p-5 md:p-6 bg-gradient-to-b from-red-800 via-red-900 to-red-950">
+          <div className="pokedex-bezel-frame relative rounded-2xl sm:rounded-3xl border-2 sm:border-4 border-gray-900/90 p-2 sm:p-4 shadow-2xl overflow-hidden">
+            
+            {/* Fentes d'aération & Haut-parleurs supérieurs du Bezel */}
+            <div className="flex items-center justify-between px-2 pb-2">
+              <div className="flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-red-600/80 shadow-xs" />
+                <span className="size-2 rounded-full bg-red-600/80 shadow-xs" />
+              </div>
+
+              {/* Grille de haut-parleur stéréo */}
+              <div className="flex items-center gap-1">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <span
+                    key={i}
+                    className="h-1.5 w-4 rounded-full bg-gray-800 border-b border-gray-700/60"
+                  />
+                ))}
+              </div>
+
+              {/* Vis de fixation du Bezel */}
+              <div className="flex items-center gap-1 text-[10px] font-mono text-gray-600">
+                <span>⊕</span>
+              </div>
+            </div>
+
+            {/* 3. DALLE NUMÉRIQUE INTERACTIVE (ÉCRAN DU POKÉDEX) */}
+            <main className="pokedex-digital-screen pokedex-scanlines min-h-[65vh] rounded-xl sm:rounded-2xl border border-gray-300 dark:border-gray-800 p-4 sm:p-6 md:p-8 text-gray-900 dark:text-gray-100 overflow-x-hidden">
+              {children}
+            </main>
+
+            {/* Fentes et voyants inférieurs du Bezel */}
+            <div className="flex items-center justify-between px-2 pt-2 text-[10px] font-mono text-gray-500">
+              <div className="flex items-center gap-2">
+                <span className="flex size-3 items-center justify-center rounded-full bg-red-600 text-white font-bold text-[8px]">
+                  ●
+                </span>
+                <span className="hidden sm:inline text-gray-400">DISPLAY READY</span>
+              </div>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: 4 }, (_, i) => (
+                  <span
+                    key={i}
+                    className="h-1 w-5 rounded-full bg-gray-800"
+                  />
+                ))}
+              </div>
+              <span>⊕</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. CONSOLE DE COMMANDES PHYSIQUES INFÉRIEURES */}
+        <footer className="border-t-4 border-red-900 bg-gradient-to-b from-red-800 via-red-700 to-red-900 px-4 py-3 sm:px-6 sm:py-4 text-white shadow-inner">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            
+            {/* Croix directionnelle (D-Pad) tactile fonctionnelle */}
+            <div className="flex items-center gap-3">
+              <div className="relative size-14 shrink-0 rounded-full bg-gray-950 p-1 shadow-md border border-gray-800 flex items-center justify-center">
+                {/* Croix directionnelle */}
+                <div className="relative size-10">
+                  {/* Bouton Haut */}
+                  <button
+                    type="button"
+                    onClick={remonterEnHaut}
+                    title="Défiler vers le haut"
+                    aria-label="Défiler vers le haut"
+                    className="absolute top-0 left-3 flex size-4 items-center justify-center rounded-t-sm bg-gray-800 text-[8px] font-bold text-gray-400 hover:bg-gray-700 active:bg-gray-600"
+                  >
+                    ▲
+                  </button>
+                  {/* Bouton Bas */}
+                  <button
+                    type="button"
+                    onClick={descendreEnBas}
+                    title="Défiler vers le bas"
+                    aria-label="Défiler vers le bas"
+                    className="absolute bottom-0 left-3 flex size-4 items-center justify-center rounded-b-sm bg-gray-800 text-[8px] font-bold text-gray-400 hover:bg-gray-700 active:bg-gray-600"
+                  >
+                    ▼
+                  </button>
+                  {/* Bouton Gauche */}
+                  <button
+                    type="button"
+                    onClick={() => window.history.back()}
+                    title="Page précédente"
+                    aria-label="Page précédente"
+                    className="absolute left-0 top-3 flex size-4 items-center justify-center rounded-l-sm bg-gray-800 text-[8px] font-bold text-gray-400 hover:bg-gray-700 active:bg-gray-600"
+                  >
+                    ◀
+                  </button>
+                  {/* Bouton Droite */}
+                  <button
+                    type="button"
+                    onClick={() => window.history.forward()}
+                    title="Page suivante"
+                    aria-label="Page suivante"
+                    className="absolute right-0 top-3 flex size-4 items-center justify-center rounded-r-sm bg-gray-800 text-[8px] font-bold text-gray-400 hover:bg-gray-700 active:bg-gray-600"
+                  >
+                    ▶
+                  </button>
+                  {/* Centre du D-Pad */}
+                  <div className="absolute left-3 top-3 size-4 bg-gray-850" />
+                </div>
+              </div>
+
+              <div className="hidden sm:flex flex-col font-mono text-[10px] text-red-200">
+                <span className="font-bold">CONTRÔLE TACTILE</span>
+                <span className="text-red-300/80">NAVIGATION RAPIDE</span>
+              </div>
+            </div>
+
+            {/* Boutons d'action matériels oblongs (A / B / Menu) */}
+            <div className="flex items-center gap-2">
+              <Link
+                href="/"
+                className="flex h-8 items-center rounded-full bg-blue-600 px-3.5 font-mono text-xs font-extrabold text-white shadow-md border-b-2 border-blue-900 active:translate-y-0.5 transition"
+                title="Bouton A : Liste complète"
+              >
+                A · INDEX
+              </Link>
+              <Link
+                href="/sacoche"
+                className="flex h-8 items-center rounded-full bg-emerald-600 px-3.5 font-mono text-xs font-extrabold text-white shadow-md border-b-2 border-emerald-900 active:translate-y-0.5 transition"
+                title="Bouton B : Sacoche dresseur"
+              >
+                B · ÉQUIPE
+              </Link>
+            </div>
+
+            {/* Plaque d'immatriculation du modèle Pokédex */}
+            <div className="text-right font-mono text-[10px] text-red-200/80">
+              <p className="font-bold text-white">SILPH CO. · MODEL PKDX-1025</p>
+              <p className="text-[9px]">SÉRIE : #2026-KANTO-PALDEA</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}

@@ -77,7 +77,7 @@ export default async function PagePokemon({ params }: Props) {
         </Link>
       </div>
 
-      <div className="grid gap-8 rounded-3xl border border-black/5 bg-white p-6 shadow-sm md:grid-cols-2 md:p-10 dark:border-white/10 dark:bg-gray-900">
+      <div className="grid gap-8 rounded-3xl border border-gray-200/80 bg-white/95 p-6 shadow-sm md:grid-cols-2 md:p-10 dark:border-gray-800 dark:bg-gray-900/90">
         {/* Colonne gauche : Visuel Normal / Shiny + Cri audio */}
         <div className="flex flex-col items-center justify-between gap-4">
           <VisuelPokemon

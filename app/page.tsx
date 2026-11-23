@@ -56,10 +56,16 @@ export default async function Accueil({ searchParams }: Props) {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-pokedex">
+                Scanner Pokédex · Métadonnées Actives
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               {gen ? `Pokédex · Région ${gen.charAt(0).toUpperCase() + gen.slice(1)}` : "Tous les Pokémon"}
             </h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
               {total} Pokémon répertorié{total > 1 ? "s" : ""}
               {bornesGen ? ` (#${bornesGen.debut} à #${bornesGen.fin})` : ""}
               {type ? ` pour le type « ${type} »` : ""}

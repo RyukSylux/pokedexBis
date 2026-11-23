@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AnalyseurEquipe from "@/components/AnalyseurEquipe";
 import BadgeType from "@/components/BadgeType";
+import ModalRecrutement from "@/components/ModalRecrutement";
 import { TYPES } from "@/lib/types";
 import { TAILLE_SACOCHE, useSacoche } from "@/stores/sacoche";
 
@@ -20,6 +21,13 @@ export default function PageSacoche() {
   const [confirmerVider, setConfirmerVider] = useState(false);
   const [slotEnEdition, setSlotEnEdition] = useState<number | null>(null);
   const [valeurSurnom, setValeurSurnom] = useState("");
+  const [recrutementOuvert, setRecrutementOuvert] = useState(false);
+  const [slotCible, setSlotCible] = useState<number | null>(null);
+
+  const handleOuvrirRecrutement = (slot?: number) => {
+    setSlotCible(slot || null);
+    setRecrutementOuvert(true);
+  };
 
   const typesCouverts = [...new Set(equipe.flatMap((membre) => membre.types))];
   const emplacementsLibres = Math.max(0, TAILLE_SACOCHE - equipe.length);
@@ -67,37 +75,50 @@ export default function PageSacoche() {
           </div>
         </div>
 
-        {/* Bouton Vider la sacoche avec sécurité */}
-        {equipe.length > 0 && (
-          <div className="flex items-center gap-2">
-            {confirmerVider ? (
-              <div className="flex items-center gap-2">
+        {/* Actions d'en-tête : Recruter + Vider l'équipe */}
+        <div className="flex items-center gap-2">
+          {emplacementsLibres > 0 && (
+            <button
+              type="button"
+              onClick={() => handleOuvrirRecrutement()}
+              className="rounded-xl bg-pokedex px-3.5 py-2 text-xs font-bold text-white shadow-md shadow-pokedex/30 hover:brightness-110 active:scale-95 transition flex items-center gap-1.5"
+            >
+              <span>+</span>
+              <span>Recruter ({emplacementsLibres} libre{emplacementsLibres > 1 ? "s" : ""})</span>
+            </button>
+          )}
+
+          {equipe.length > 0 && (
+            <div>
+              {confirmerVider ? (
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleVider}
+                    className="rounded-xl bg-red-600 px-3.5 py-2 text-xs font-bold text-white shadow-md hover:bg-red-700 active:scale-95 transition"
+                  >
+                    ✓ Confirmer vidage
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmerVider(false)}
+                    className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              ) : (
                 <button
                   type="button"
                   onClick={handleVider}
-                  className="rounded-xl bg-red-600 px-3.5 py-2 text-xs font-bold text-white shadow-md hover:bg-red-700 active:scale-95 transition"
+                  className="rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-bold text-gray-600 hover:border-red-300 hover:text-red-600 transition shadow-xs dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-red-900 dark:hover:text-red-400"
                 >
-                  ✓ Confirmer vidage
+                  🗑️ Vider l&apos;équipe
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setConfirmerVider(false)}
-                  className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-                >
-                  Annuler
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={handleVider}
-                className="rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-bold text-gray-600 hover:border-red-300 hover:text-red-600 transition shadow-xs dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-red-900 dark:hover:text-red-400"
-              >
-                🗑️ Vider l&apos;équipe
-              </button>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Cartouche des compteurs globaux */}
@@ -357,31 +378,38 @@ export default function PageSacoche() {
             );
           })}
 
-          {/* Emplacements libres interactifs */}
+          {/* Emplacements libres interactifs avec recrutement direct in-situ */}
           {Array.from({ length: emplacementsLibres }, (_, i) => {
             const numeroSlot = equipe.length + i + 1;
             return (
               <div
                 key={`libre-${i}`}
-                className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-gray-200 p-6 text-center transition hover:border-pokedex/60 hover:bg-red-50/20 dark:border-gray-800 dark:hover:border-pokedex/40 min-h-56"
+                onClick={() => handleOuvrirRecrutement(numeroSlot)}
+                className="group flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-gray-200 p-6 text-center transition-all duration-200 hover:border-pokedex hover:bg-red-50/30 dark:border-gray-800 dark:hover:border-pokedex/60 dark:hover:bg-red-950/10 min-h-56 cursor-pointer"
+                title={`Cliquer pour recruter un Pokémon sur le slot #${numeroSlot}`}
               >
-                <div className="flex size-12 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500 mb-2">
+                <div className="flex size-12 items-center justify-center rounded-full bg-gray-100 text-gray-400 group-hover:bg-pokedex group-hover:text-white transition-colors dark:bg-gray-800 dark:text-gray-500 mb-2">
                   <span className="font-mono text-xs font-bold">
                     #{String(numeroSlot).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                  Emplacement #{numeroSlot} disponible
+                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-pokedex transition-colors">
+                  Emplacement #{numeroSlot} libre
                 </h3>
                 <p className="mt-1 text-xs text-gray-400 max-w-44">
-                  Complétez votre équipe pour optimiser votre couverture.
+                  Cliquez ici pour recruter directement un compagnon.
                 </p>
-                <Link
-                  href="/"
-                  className="mt-3.5 inline-flex items-center gap-1 rounded-xl bg-gray-900 px-3.5 py-1.5 font-mono text-xs font-bold text-white shadow-xs hover:bg-pokedex transition dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-pokedex dark:hover:text-white"
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOuvrirRecrutement(numeroSlot);
+                  }}
+                  className="mt-3.5 inline-flex items-center gap-1 rounded-xl bg-gray-900 px-3.5 py-1.5 font-mono text-xs font-bold text-white shadow-xs group-hover:bg-pokedex transition dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-pokedex dark:hover:text-white"
                 >
-                  + Recruter un Pokémon
-                </Link>
+                  <span>+</span>
+                  <span>Recruter sur place</span>
+                </button>
               </div>
             );
           })}
@@ -390,6 +418,13 @@ export default function PageSacoche() {
 
       {/* Analyseur tactique de synergie */}
       <AnalyseurEquipe equipe={equipe} />
+
+      {/* Modal de recrutement direct in-situ */}
+      <ModalRecrutement
+        ouvert={recrutementOuvert}
+        onFermer={() => setRecrutementOuvert(false)}
+        slotCible={slotCible}
+      />
     </div>
   );
 }
