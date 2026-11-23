@@ -71,8 +71,8 @@ export default async function Accueil({ searchParams }: Props) {
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-pokedex">
                 {!estModeGrille
-                  ? "Tambour Pokédex Rétro · Molette 3D Continue"
-                  : "Scanner Pokédex · Vue Grille Matricielle"}
+                  ? "Pokédex Rétro · Molette 3D"
+                  : "Pokédex · Vue Grille Matricielle"}
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
@@ -83,7 +83,6 @@ export default async function Accueil({ searchParams }: Props) {
               {bornesGen ? ` (#${bornesGen.debut} à #${bornesGen.fin})` : ""}
               {type ? ` pour le type « ${type} »` : ""}
               {q ? ` contenant « ${q} »` : ""}
-              {!estModeGrille ? " · Défilement 3D continu sans coupure" : ""}
             </p>
           </div>
 
