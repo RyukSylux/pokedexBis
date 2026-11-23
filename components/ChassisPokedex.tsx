@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import CompteurFavoris from "./CompteurFavoris";
 import IndicateurSacoche from "./IndicateurSacoche";
@@ -11,20 +10,6 @@ type Props = {
 };
 
 export default function ChassisPokedex({ children }: Props) {
-  const [heureActuelle, setHeureActuelle] = useState<string>("");
-
-  useEffect(() => {
-    const mettreAJourHeure = () => {
-      const m = new Date();
-      setHeureActuelle(
-        `${String(m.getHours()).padStart(2, "0")}:${String(m.getMinutes()).padStart(2, "0")}`
-      );
-    };
-    mettreAJourHeure();
-    const intervalle = setInterval(mettreAJourHeure, 30000);
-    return () => clearInterval(intervalle);
-  }, []);
-
   const remonterEnHaut = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -50,85 +35,65 @@ export default function ChassisPokedex({ children }: Props) {
           ))}
         </div>
 
-        {/* 1. TÊTE DE CONTRÔLE MATÉRIELLE DU POKÉDEX SINNOH */}
-        <header className="relative border-b-4 border-blue-950 bg-gradient-to-r from-blue-900 via-blue-800 to-slate-950 px-4 pt-3 pb-3 sm:px-6 sm:pt-4 sm:pb-3.5 shadow-md">
-          {/* Ligne 1 : Grand Capteur Bleu, Diodes & HUD Statut Sinnoh */}
+        {/* 1. TÊTE DE CONTRÔLE MATÉRIELLE DU POKÉDEX (ÉPURÉE, SANS ENCOMBREMENT EN HAUT À DROITE) */}
+        <header className="relative border-b-4 border-blue-950 bg-gradient-to-r from-blue-900 via-blue-800 to-slate-950 px-4 py-2.5 sm:px-6 sm:py-3 shadow-md">
           <div className="flex items-center justify-between gap-3">
-            {/* Capteur optique & Diodes */}
+            
+            {/* Côté Gauche : Capteur optique, Diodes & Logo Pokeball */}
             <div className="flex items-center gap-3 sm:gap-4">
               {/* Grand Capteur Optique Bleu avec biseau chromé */}
               <div
-                className="relative flex size-12 sm:size-14 shrink-0 items-center justify-center rounded-full border-4 border-white bg-slate-200 shadow-lg shadow-black/40 cursor-pointer active:scale-95 transition-transform"
+                className="relative flex size-11 sm:size-13 shrink-0 items-center justify-center rounded-full border-4 border-white bg-slate-200 shadow-lg shadow-black/40 cursor-pointer active:scale-95 transition-transform"
                 title="Capteur optique Pokédex"
                 onClick={remonterEnHaut}
               >
                 <div className="pokedex-optical-lens flex size-full items-center justify-center rounded-full animate-pulse">
-                  <span className="absolute left-2 top-2 size-3.5 sm:size-4 rounded-full bg-white/70 blur-[0.5px]" />
+                  <span className="absolute left-1.5 top-1.5 size-3 sm:size-3.5 rounded-full bg-white/70 blur-[0.5px]" />
                 </div>
               </div>
 
-              {/* Trio de LEDs indicatrices (Rouge, Ambre, Vert) */}
-              <div className="flex items-center gap-2 sm:gap-2.5">
+              {/* Trio de LEDs indicatrices */}
+              <div className="flex items-center gap-2">
                 <div
-                  className="flex size-3.5 sm:size-4 items-center justify-center rounded-full border border-black/40 bg-red-500 shadow-sm shadow-red-500/80"
-                  title="Statut alimentation : ACTIF"
+                  className="flex size-3 sm:size-3.5 items-center justify-center rounded-full border border-black/40 bg-red-500 shadow-sm shadow-red-500/80"
+                  title="Statut alimentation"
                 >
                   <span className="size-1 rounded-full bg-white/80" />
                 </div>
                 <div
-                  className="flex size-3.5 sm:size-4 items-center justify-center rounded-full border border-black/40 bg-amber-400 shadow-sm shadow-amber-400/80"
-                  title="Base de données : 1 025 POKÉMON SYNCHRONISÉS"
+                  className="flex size-3 sm:size-3.5 items-center justify-center rounded-full border border-black/40 bg-amber-400 shadow-sm shadow-amber-400/80"
+                  title="Base de données synchronisée"
                 >
                   <span className="size-1 rounded-full bg-white/80" />
                 </div>
                 <div
-                  className="flex size-3.5 sm:size-4 items-center justify-center rounded-full border border-black/40 bg-emerald-400 shadow-sm shadow-emerald-400/80"
-                  title="Réseau PokéAPI : CONNECTÉ"
+                  className="flex size-3 sm:size-3.5 items-center justify-center rounded-full border border-black/40 bg-emerald-400 shadow-sm shadow-emerald-400/80"
+                  title="Système connecté"
                 >
                   <span className="size-1 rounded-full bg-white/80" />
                 </div>
               </div>
-            </div>
 
-            {/* HUD Statut Système Sinnoh */}
-            <div className="flex items-center gap-3">
-              <div className="hidden sm:flex flex-col items-end font-mono text-[10px] text-blue-200 leading-tight">
-                <span className="font-extrabold tracking-wider text-white">POKÉDEX SINNOH · DS MODEL</span>
-                <span className="text-blue-300/80">PROF. SORBIER · {heureActuelle || "12:00"}</span>
-              </div>
-
-              <div className="flex items-center gap-1.5 rounded-lg bg-black/50 border border-blue-400/30 px-2.5 py-1 font-mono text-xs font-bold text-white shadow-inner">
-                <span className="size-2 rounded-full bg-emerald-400 animate-ping" />
-                <span className="text-emerald-300">ONLINE</span>
+              {/* Logo Pokeball épuré */}
+              <div className="hidden sm:flex pl-2 border-l border-blue-400/30">
+                <LogoPokeball />
               </div>
             </div>
-          </div>
 
-          {/* Ligne 2 : Navigation Pokédex & Accès Rapides */}
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-blue-400/20">
-            <div className="flex items-center">
-              <LogoPokeball />
-            </div>
-
-            <nav className="flex items-center gap-2 text-xs sm:text-sm font-bold">
+            {/* Côté Droit : Navigation Pokédex fluide (Plus aucun HUD ni gadget en haut à droite) */}
+            <nav className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold">
               <Link
                 href="/"
-                className="rounded-full bg-black/30 hover:bg-black/50 border border-white/10 px-3.5 py-1.5 transition text-white active:scale-95 shadow-inner"
+                className="rounded-full bg-black/30 hover:bg-black/50 border border-white/10 px-3 py-1.5 transition text-white active:scale-95 shadow-inner"
               >
                 Encyclopédie
               </Link>
               <Link
                 href="/favoris"
-                className="flex items-center gap-1.5 rounded-full bg-black/30 hover:bg-black/50 border border-white/10 px-3.5 py-1.5 transition text-white active:scale-95 shadow-inner"
+                className="flex items-center gap-1.5 rounded-full bg-black/30 hover:bg-black/50 border border-white/10 px-3 py-1.5 transition text-white active:scale-95 shadow-inner"
               >
                 <span>Favoris</span>
                 <CompteurFavoris />
-              </Link>
-              <Link
-                href="/a-propos"
-                className="hidden md:inline rounded-full bg-black/30 hover:bg-black/50 border border-white/10 px-3.5 py-1.5 transition text-white shadow-inner"
-              >
-                Manuel
               </Link>
               <IndicateurSacoche />
             </nav>
