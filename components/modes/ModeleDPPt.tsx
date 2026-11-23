@@ -113,7 +113,7 @@ export default function ModeleDPPt({ pokemons }: Props) {
         {/* ========================================================= */}
         {/* ÉCRAN HAUT (VISUALISATION & FICHE BIOMÉTRIQUE)            */}
         {/* ========================================================= */}
-        <div className="flex-1 lg:h-full min-h-0 flex flex-col justify-between rounded-xl sm:rounded-2xl border-2 sm:border-3 border-blue-500/60 bg-gradient-to-b from-slate-950 via-blue-950/40 to-slate-950 p-2.5 sm:p-3.5 shadow-xl relative overflow-hidden">
+        <div className="lg:col-span-7 flex-1 lg:h-full min-h-0 flex flex-col justify-between rounded-xl sm:rounded-2xl border-2 sm:border-3 border-blue-500/60 bg-gradient-to-b from-slate-950 via-blue-950/40 to-slate-950 p-2.5 sm:p-3.5 shadow-xl relative overflow-hidden">
           
           {/* Grille radar Sinnoh */}
           <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1.5px,transparent_1.5px)] [background-size:20px_20px] opacity-15 pointer-events-none" />
@@ -228,7 +228,7 @@ export default function ModeleDPPt({ pokemons }: Props) {
         {/* ========================================================= */}
         {/* ÉCRAN BAS (TACTILE DS & POKÉ-MOLETTE IMMÉDIATEMENT ACCESSIBLE) */}
         {/* ========================================================= */}
-        <div className="flex-1 lg:h-full min-h-0 flex flex-col justify-between rounded-xl sm:rounded-2xl border-2 sm:border-3 border-blue-500/60 bg-gradient-to-b from-slate-900 via-gray-950 to-slate-900 p-2.5 sm:p-3.5 shadow-xl relative overflow-hidden">
+        <div className="lg:col-span-5 flex-1 lg:h-full min-h-0 flex flex-col justify-between rounded-xl sm:rounded-2xl border-2 sm:border-3 border-blue-500/60 bg-gradient-to-b from-slate-900 via-gray-950 to-slate-900 p-2.5 sm:p-3.5 shadow-xl relative overflow-hidden">
           
           {/* Header écran tactile */}
           <div className="shrink-0 flex items-center justify-between text-[10px] sm:text-xs font-mono text-blue-300/90 border-b border-blue-500/30 pb-1">
