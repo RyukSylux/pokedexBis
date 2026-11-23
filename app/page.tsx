@@ -4,7 +4,8 @@ import BasculeVue from "@/components/BasculeVue";
 import FiltreTypes from "@/components/FiltreTypes";
 import GrillePokemons from "@/components/GrillePokemons";
 import Pagination from "@/components/Pagination";
-import RoulettePokedex from "@/components/RoulettePokedex";
+import NavigateurPokedex from "@/components/modes/NavigateurPokedex";
+import SelecteurModelePokedex from "@/components/selecteur/SelecteurModelePokedex";
 import SelecteurGeneration from "@/components/SelecteurGeneration";
 import SqueletteGrille from "@/components/SqueletteGrille";
 import { estDansGeneration, obtenirBornesGeneration } from "@/lib/generations";
@@ -87,6 +88,7 @@ export default async function Accueil({ searchParams }: Props) {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <SelecteurModelePokedex />
             <BasculeVue />
             <BarreRecherche />
             <FiltreTypes />
@@ -114,7 +116,7 @@ export default async function Accueil({ searchParams }: Props) {
           />
         </>
       ) : (
-        <RoulettePokedex pokemons={liste} />
+        <NavigateurPokedex pokemons={liste} />
       )}
     </div>
   );
