@@ -25,11 +25,12 @@ export default function KonamiDetector() {
   const [doomOuvert, setDoomOuvert] = useState(false);
   const [cheatPadOuvert, setCheatPadOuvert] = useState(false);
 
+  // Désactiver l'écouteur Konami dès que DOOM est ouvert afin de ne pas intercepter les touches du jeu !
   const { progression, ajouterTouche, reinitialiser } = useKonami(() => {
     // Fermer la manette si ouverte et ouvrir DOOM
     setCheatPadOuvert(false);
     setDoomOuvert(true);
-  });
+  }, !doomOuvert);
 
   useEffect(() => {
     const handleOuvrirCheat = () => {

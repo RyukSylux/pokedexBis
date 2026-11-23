@@ -15,7 +15,7 @@ export const SEQUENCE_KONAMI = [
   "a",
 ];
 
-export function useKonami(onSuccess: () => void) {
+export function useKonami(onSuccess: () => void, actif: boolean = true) {
   const [saisie, setSaisie] = useState<string[]>([]);
 
   const normaliserTouche = (touche: string): string => {
@@ -68,6 +68,8 @@ export function useKonami(onSuccess: () => void) {
   }, []);
 
   useEffect(() => {
+    if (!actif) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       // Ignorer si l'utilisateur est en train de taper dans un champ de formulaire
       const cible = event.target as HTMLElement | null;
@@ -87,7 +89,7 @@ export function useKonami(onSuccess: () => void) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [ajouterTouche]);
+  }, [actif, ajouterTouche]);
 
   return {
     saisie,
