@@ -7,12 +7,13 @@ export type TransformationRoulette = {
 
 /**
  * Calcule l'inclinaison 3D, l'échelle et l'opacité d'un élément de la roulette
- * selon son écart (offset) par rapport au centre.
+ * selon son écart (offset) par rapport au centre du tambour.
  */
 export function calculerTransformationRoulette(offset: number): TransformationRoulette {
-  const angleDeg = Math.max(-75, Math.min(75, offset * 22));
-  const scale = Math.max(0.72, 1 - Math.abs(offset) * 0.08);
-  const opacite = Math.max(0.15, 1 - Math.abs(offset) * 0.22);
+  // Angle courbé simulant un barillet cylindrique physique
+  const angleDeg = Math.max(-70, Math.min(70, offset * 24));
+  const scale = Math.max(0.75, 1 - Math.abs(offset) * 0.07);
+  const opacite = Math.max(0.2, 1 - Math.abs(offset) * 0.2);
   const estCentre = offset === 0;
 
   return {
@@ -24,7 +25,7 @@ export function calculerTransformationRoulette(offset: number): TransformationRo
 }
 
 /**
- * Calcule l'index suivant ou précédent avec protection contre les dépassements.
+ * Calcule le prochain index sans déborder des bornes.
  */
 export function prochainIndex(
   indexActif: number,
@@ -36,12 +37,13 @@ export function prochainIndex(
 }
 
 /**
- * Retourne la liste ordonnée des indices visibles autour de l'élément sélectionné.
+ * Retourne la liste ordonnée des indices visibles autour de l'élément sélectionné
+ * pour un rendu fluide du tambour sans saturer le DOM.
  */
 export function obtenirIndicesVisibles(
   indexActif: number,
   total: number,
-  rayon = 3
+  rayon = 4
 ): number[] {
   if (total <= 0) return [];
   const debut = Math.max(0, indexActif - rayon);
@@ -52,4 +54,38 @@ export function obtenirIndicesVisibles(
     indices.push(i);
   }
   return indices;
+}
+
+/**
+ * Petit son de cran mécanique rétro au défilement de la molette
+ * via la Web Audio API native.
+ */
+export function jouerBruitageMolette(): void {
+  if (typeof window === "undefined") return;
+  try {
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    const ctx = new AudioContextClass();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(650, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 0.025);
+
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.025);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.025);
+  } catch {
+    // Ignorer si audio restreint par politique du navigateur
+  }
 }

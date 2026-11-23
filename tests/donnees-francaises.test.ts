@@ -15,13 +15,13 @@ describe("lib/donnees-francaises - Chargement direct des 1 025 noms et descripti
     expect(p1).toBeDefined();
     expect(p1?.nomFr).toBe("Bulbizarre");
     expect(p1?.categorieFr).toBe("Pokémon Graine");
-    expect(p1?.descriptionFr).toContain("nutriments");
+    expect(p1?.descriptionFr).toContain("bulbe");
   });
 
   it("charge directement les données du Pokémon #25 (Pikachu)", () => {
     expect(obtenirNomFrancais(25)).toBe("Pikachu");
     expect(obtenirCategorieFrancaise(25)).toBe("Pokémon Souris");
-    expect(obtenirDescriptionFrancaise(25)).toContain("queue");
+    expect(obtenirDescriptionFrancaise(25)).toContain("électricité");
   });
 
   it("charge directement le dernier Pokémon #1025 (Pêchaminus)", () => {

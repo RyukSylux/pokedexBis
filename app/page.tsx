@@ -8,12 +8,7 @@ import RoulettePokedex from "@/components/RoulettePokedex";
 import SelecteurGeneration from "@/components/SelecteurGeneration";
 import SqueletteGrille from "@/components/SqueletteGrille";
 import { estDansGeneration, obtenirBornesGeneration } from "@/lib/generations";
-import { obtenirNomFrancais } from "@/lib/donnees-francaises";
-import {
-  recupererNomsParType,
-  recupererPlusieurs,
-  recupererTousLesNoms,
-} from "@/lib/pokeapi";
+import { obtenirTousLesPokemonsComplets } from "@/lib/donnees-francaises";
 import { correspondanceRecherche, normaliserTexte } from "@/lib/recherche-bilingue";
 
 type Props = {
@@ -29,32 +24,40 @@ type Props = {
 export default async function Accueil({ searchParams }: Props) {
   const { q, type, page, gen, vue } = await searchParams;
 
+  const estModeGrille = vue === "grille";
   const pageCourante = Math.max(1, parseInt(page ?? "1", 10) || 1);
   const parPage = 24;
 
-  // 1. Récupération des Pokémon selon le type ou tous les Pokémon
-  let liste = type ? await recupererNomsParType(type) : await recupererTousLesNoms();
+  // Récupération instantanée de tous les Pokémon complets intégrés
+  let liste = obtenirTousLesPokemonsComplets();
 
-  // 2. Filtrage par génération / région
+  // Filtrage par type
+  if (type) {
+    liste = liste.filter((p) => p.types.includes(type.toLowerCase()));
+  }
+
+  // Filtrage par génération / région
   if (gen && gen.trim()) {
     liste = liste.filter((p) => estDansGeneration(p.id, gen));
   }
 
-  // 3. Filtrage bilingue (FR / EN)
+  // Filtrage bilingue (FR / EN ou ID)
   if (q && q.trim()) {
     liste = liste.filter((p) => {
-      const nomFr = obtenirNomFrancais(p.id);
-      if (nomFr && normaliserTexte(nomFr).includes(normaliserTexte(q))) return true;
-      return correspondanceRecherche(p.nom, q);
+      if (String(p.id) === q.trim()) return true;
+      if (p.nomFr && normaliserTexte(p.nomFr).includes(normaliserTexte(q))) return true;
+      return (
+        normaliserTexte(p.nom).includes(normaliserTexte(q)) ||
+        correspondanceRecherche(p.nom, q)
+      );
     });
   }
 
   const total = liste.length;
-  const debut = (pageCourante - 1) * parPage;
-  const pageActuelle = liste.slice(debut, debut + parPage);
-  const nomsPage = pageActuelle.map((p) => p.nom);
 
-  const pokemons = await recupererPlusieurs(nomsPage);
+  // Découpage par page uniquement pour le mode grille
+  const debut = (pageCourante - 1) * parPage;
+  const pokemonsGrille = liste.slice(debut, debut + parPage);
 
   // Libellé de la région sélectionnée
   const bornesGen = gen ? obtenirBornesGeneration(gen) : null;
@@ -67,7 +70,9 @@ export default async function Accueil({ searchParams }: Props) {
             <div className="flex items-center gap-2 mb-1">
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-pokedex">
-                Scanner Pokédex · Métadonnées Actives
+                {!estModeGrille
+                  ? "Tambour Pokédex Rétro · Molette 3D Continue"
+                  : "Scanner Pokédex · Vue Grille Matricielle"}
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
@@ -78,6 +83,7 @@ export default async function Accueil({ searchParams }: Props) {
               {bornesGen ? ` (#${bornesGen.debut} à #${bornesGen.fin})` : ""}
               {type ? ` pour le type « ${type} »` : ""}
               {q ? ` contenant « ${q} »` : ""}
+              {!estModeGrille ? " · Défilement 3D continu sans coupure" : ""}
             </p>
           </div>
 
@@ -92,23 +98,25 @@ export default async function Accueil({ searchParams }: Props) {
         <SelecteurGeneration />
       </div>
 
-      {vue === "roulette" ? (
-        <RoulettePokedex pokemons={pokemons} />
-      ) : (
-        <Suspense fallback={<SqueletteGrille count={parPage} />}>
-          <GrillePokemons pokemons={pokemons} />
-        </Suspense>
-      )}
+      {estModeGrille ? (
+        <>
+          <Suspense fallback={<SqueletteGrille count={parPage} />}>
+            <GrillePokemons pokemons={pokemonsGrille} />
+          </Suspense>
 
-      <Pagination
-        pageCourante={pageCourante}
-        totalElements={total}
-        parPage={parPage}
-        recherche={q}
-        type={type}
-        gen={gen}
-        vue={vue}
-      />
+          <Pagination
+            pageCourante={pageCourante}
+            totalElements={total}
+            parPage={parPage}
+            recherche={q}
+            type={type}
+            gen={gen}
+            vue={vue}
+          />
+        </>
+      ) : (
+        <RoulettePokedex pokemons={liste} />
+      )}
     </div>
   );
 }
