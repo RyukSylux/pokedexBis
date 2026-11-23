@@ -58,12 +58,14 @@ export default async function Accueil({ searchParams }: Props) {
 
   // Libellé de la région sélectionnée
   return (
-    <div className="space-y-3.5">
+    <div className="flex-1 min-h-0 flex flex-col gap-2 overflow-hidden">
       {/* BARRE TACTILE SINNOH SANS AUCUNE COMBO-BOX */}
-      <BarreControlesPokedex total={total} />
+      <div className="shrink-0">
+        <BarreControlesPokedex total={total} />
+      </div>
 
       {estModeGrille ? (
-        <>
+        <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col gap-4">
           <Suspense fallback={<SqueletteGrille count={parPage} />}>
             <GrillePokemons pokemons={pokemonsGrille} />
           </Suspense>
@@ -77,9 +79,11 @@ export default async function Accueil({ searchParams }: Props) {
             gen={gen}
             vue={vue}
           />
-        </>
+        </div>
       ) : (
-        <NavigateurPokedex pokemons={liste} />
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+          <NavigateurPokedex pokemons={liste} />
+        </div>
       )}
     </div>
   );

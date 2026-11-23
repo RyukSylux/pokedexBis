@@ -18,9 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="h-full" suppressHydrationWarning>
+    <html lang="fr" className="h-full overflow-hidden" suppressHydrationWarning>
       <body
-        className="min-h-screen text-gray-900 antialiased dark:text-gray-100"
+        className="h-full h-[100dvh] overflow-hidden text-gray-900 antialiased dark:text-gray-100"
         suppressHydrationWarning
       >
         <HydratationStores />
