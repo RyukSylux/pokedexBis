@@ -118,11 +118,11 @@ export default function ModeleDPPt({ pokemons }: Props) {
           {/* Grille radar Sinnoh */}
           <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1.5px,transparent_1.5px)] [background-size:20px_20px] opacity-15 pointer-events-none" />
 
-          <div className="flex-1 min-h-0 flex flex-col justify-between">
+          <div className="flex-1 min-h-0 flex flex-col justify-center gap-2.5 sm:gap-4">
             <div className="relative flex flex-row items-center gap-2.5 sm:gap-4 md:gap-5">
               
               {/* Cadre Artwork Pokémon */}
-              <div className="relative size-20 sm:size-32 md:size-40 lg:size-44 shrink-0 flex items-center justify-center rounded-xl sm:rounded-2xl border-2 border-blue-400/60 bg-gradient-to-br from-blue-900/50 via-black to-slate-950 p-1 sm:p-2 shadow-xl shadow-blue-950/50">
+              <div className="relative size-20 sm:size-32 md:size-40 lg:size-48 shrink-0 flex items-center justify-center rounded-xl sm:rounded-2xl border-2 border-blue-400/60 bg-gradient-to-br from-blue-900/50 via-black to-slate-950 p-1 sm:p-2 shadow-xl shadow-blue-950/50">
                 {/* Badge ID */}
                 <span className="absolute top-1 left-1 sm:top-1.5 sm:left-1.5 rounded bg-blue-600/90 border border-blue-400 px-1.5 py-0.2 font-mono text-[8px] sm:text-[10px] font-black text-white shadow">
                   #{String(pokemonActif.id).padStart(4, "0")}
@@ -237,10 +237,10 @@ export default function ModeleDPPt({ pokemons }: Props) {
           </div>
 
           {/* Corps tactile : Liste des Pokémon à gauche + Poké-molette épurée à droite */}
-          <div className="flex-1 min-h-0 flex items-center gap-2 sm:gap-3 my-1 sm:my-2 overflow-hidden">
+          <div className="flex-1 min-h-0 flex items-center justify-center gap-2 sm:gap-4 my-auto overflow-hidden">
             
-            {/* Liste tactile centrale */}
-            <div className="flex-1 min-h-0 h-full flex flex-col justify-around gap-1 overflow-hidden">
+            {/* Liste tactile centrale compacte (sans espace démesuré) */}
+            <div className="flex-1 min-h-0 flex flex-col justify-center gap-1.5 sm:gap-2 overflow-hidden">
               {offsets.map((offset) => {
                 const idx = indexActif + offset;
                 if (idx < 0 || idx >= total) return null;
@@ -257,10 +257,10 @@ export default function ModeleDPPt({ pokemons }: Props) {
                         setAnglePokemolette((ang) => ang + offset * 30);
                       }
                     }}
-                    className={`flex items-center justify-between px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border cursor-pointer transition ${
+                    className={`flex items-center justify-between px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border cursor-pointer transition ${
                       estSelectionne
-                        ? "bg-gradient-to-r from-blue-600 to-blue-500 border-white text-white font-black shadow-md shadow-blue-500/30 scale-[1.01]"
-                        : "bg-black/50 border-gray-800 text-gray-300 hover:border-blue-400/60 hover:bg-black/70"
+                        ? "bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 border-white text-white font-black shadow-md shadow-blue-500/30 scale-[1.01]"
+                        : "bg-black/60 border-gray-800 text-gray-300 hover:border-blue-400/60 hover:bg-black/80"
                     }`}
                   >
                     <div className="flex items-center gap-2">
